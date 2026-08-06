@@ -1,0 +1,24 @@
+CREATE DATABASE IF NOT EXISTS CONTROL_BODEGA;
+USE CONTROL_BODEGA;
+
+CREATE TABLE ARTICULOS (
+    IdArticulo   INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre       VARCHAR(100) NOT NULL,
+    StockActual  INT NOT NULL DEFAULT 0,
+    StockMinimo  INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE MOVIMIENTOS_BODEGA (
+    IdMovimiento INT AUTO_INCREMENT PRIMARY KEY,
+    IdArticulo   INT NOT NULL,
+    Tipo         CHAR(1) NOT NULL,   -- 'E' entrada, 'S' salida
+    Cantidad     INT NOT NULL,
+    Fecha        DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_MOVBODEGA_ARTICULOS FOREIGN KEY (IdArticulo) REFERENCES ARTICULOS (IdArticulo),
+    CONSTRAINT CK_MOVBODEGA_TIPO CHECK (Tipo IN ('E', 'S'))
+);
+
+INSERT INTO ARTICULOS (Nombre, StockActual, StockMinimo) VALUES
+('Tornillos 1/4"', 500, 100),
+('Cable electrico (m)', 200, 50),
+('Cinta aislante', 30, 20);
